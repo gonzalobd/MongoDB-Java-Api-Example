@@ -4,29 +4,37 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
+import sun.misc.ClassLoaderUtil;
+import org.apache.log4j.Logger;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Created by Gonzalo Bautista
  */
 public class LoadData {
 
-    public static void load(){
+    public static void load(Logger log){
+
         MongoClient client = new MongoClient("localhost",27017);
         MongoDatabase db = client.getDatabase("test");
-        db.createCollection("air");
+
+        try{
+            log.info("Creating Database...");
+            db.createCollection("air");
+        } catch (Exception e){
+            log.info("Database is Already Created!");
+        }
+
         MongoCollection<Document> collection = db.getCollection("air");
-        FileReader fr = null;
+        InputStream inputStream = ClassLoaderUtil.class.getResourceAsStream("/air.json");
+
         String line;
 
         try {
-            //TODO: insert the path of the json file in your system (FileReader):
-            fr = new FileReader("/home/hadoop/IdeaProjects/mongoDBEjercicio/MongoDBJavaApiExample/src/main/java/com/mongodb/test/MongoExample/data/air.json");
-            BufferedReader br = new BufferedReader(fr);
+            InputStreamReader streamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+            BufferedReader br = new BufferedReader(streamReader);
             try {
                 while((line = br.readLine()) != null){
                     Document doc=Document.parse(line);
@@ -36,7 +44,7 @@ public class LoadData {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

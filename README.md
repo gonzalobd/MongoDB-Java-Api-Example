@@ -11,8 +11,14 @@ Install your MongoDb in your linux/ubuntu system following the guide in:
 https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/
 Then initialize your mongod service:
 
-         > sudo service mongod start
+         > $ sudo service mongod start
+
+## If you have Docker installed:
+
+A smart and clean way of work is using Docker containers. You can get rid of installing mongo just running an Mongo Docker Container
+
+         > $ docker run  --net host  --name some-mongo -d mongo
 
 # Running.
 
-Just run the main class Mongo.java in your favourite IDE.
+Just run the .jar, or the main class Mongo.java in your favourite IDE.

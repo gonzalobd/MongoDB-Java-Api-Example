@@ -28,7 +28,7 @@ public class Mongo {
 		double min = 10;
 		double max = 15;
 		log.info("Loading Data into Database");
-		LoadData.load();
+		LoadData.load(log);
 		log.info("Data imported");
 
 		MongoCursor<Document> dataByComponentInRange = QueryHelper.findByComponentInRange(station, component, min, max);
